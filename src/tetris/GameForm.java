@@ -11,7 +11,9 @@ import javax.swing.KeyStroke;
 
 public class GameForm extends JFrame {
     
-    public GameArea newArea;
+    private GameArea newArea;
+    private GameThread ref;
+    
     
     public GameForm() {
         initComponents();
@@ -21,8 +23,6 @@ public class GameForm extends JFrame {
                                     //instantiating it in another file. (Just development things I guess(Idk I just leetcode -> stupid fuck))
 
         initControls();
-                                    
-        startGame();
     }
     
     private void initControls() {
@@ -71,7 +71,9 @@ public class GameForm extends JFrame {
     }
     
     public void startGame() {
-        new GameThread(newArea, this).start();  //wow this is something very interesting I've never thought of wow
+        newArea.initBackgroundArray();
+        ref = new GameThread(newArea, this);//wow this is something very interesting I've never thought of wow
+        ref.start();
     }
     
     public void updateScore(int score) {
@@ -89,6 +91,7 @@ public class GameForm extends JFrame {
         gameAreaPlaceholder = new javax.swing.JPanel();
         scoreLabel = new javax.swing.JLabel();
         levelLabel = new javax.swing.JLabel();
+        btnMainMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -114,12 +117,22 @@ public class GameForm extends JFrame {
         levelLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         levelLabel.setText("Level: 1");
 
+        btnMainMenu.setText("Main Menu");
+        btnMainMenu.setFocusable(false);
+        btnMainMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMainMenuActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(151, 151, 151)
+                .addGap(25, 25, 25)
+                .addComponent(btnMainMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addComponent(gameAreaPlaceholder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,13 +151,22 @@ public class GameForm extends JFrame {
                         .addComponent(levelLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(gameAreaPlaceholder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(gameAreaPlaceholder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(btnMainMenu)))
                 .addContainerGap(10, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnMainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMainMenuActionPerformed
+        ref.interrupt();
+        this.setVisible(false);
+        Tetris.showStartup();
+    }//GEN-LAST:event_btnMainMenuActionPerformed
 
     public static void main(String args[]) {
 
@@ -161,6 +183,7 @@ public class GameForm extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnMainMenu;
     private javax.swing.JPanel gameAreaPlaceholder;
     private javax.swing.JLabel levelLabel;
     private javax.swing.JLabel scoreLabel;

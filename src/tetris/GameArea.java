@@ -19,7 +19,7 @@ public class GameArea extends JPanel {
     private TetrisBlock[] blocks;
     
     public GameArea(JPanel placeholder, int columns) {
-        placeholder.setVisible(false);
+        //placeholder.setVisible(false); I need to see what this piece of code does
         this.setBounds(placeholder.getBounds()); //x, y, width, height also there are two definitions of setBounds() one which takes 4 integers, and other takes JPanel object
         this.setBackground(placeholder.getBackground());
         this.setBorder(placeholder.getBorder());
@@ -28,7 +28,6 @@ public class GameArea extends JPanel {
         cellSize = this.getBounds().width/gridCols;
         gridRows = this.getBounds().height/cellSize;
         
-        background = new Color[gridRows][gridCols];
         //spawnBlock();
         
         blocks = new TetrisBlock[] {new IShape(), new JShape(), new LShape(), new OShape(), new SShape(), new TShape(), new ZShape()};  //now here is an interesting piece of information, if you look closely, you
@@ -42,6 +41,10 @@ public class GameArea extends JPanel {
                                                                                                                                         //TetrisBlock class, so they are all "technically" TetrisBlock objects
                                                                                                                                         //and hence we can store their references in a single array
                                                                                                                                         
+    }
+    
+    public void initBackgroundArray() {
+        background = new Color[gridRows][gridCols];
     }
     
     public void spawnBlock() {
@@ -188,7 +191,11 @@ public class GameArea extends JPanel {
                 
                 repaint();
             }
-        }  
+        }
+        
+        if(linesCleared > 0) 
+            Tetris.playClear();
+        
         
         return linesCleared;    
     }
